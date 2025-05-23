@@ -6,8 +6,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.setWindowTitle("EasyElective");
     w.show();
-    w.test_addLessons();
+    /*
+    w.addItem(123);
+    w.addItem(145);
+    */
     return a.exec();
 }

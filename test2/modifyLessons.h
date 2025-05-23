@@ -11,6 +11,9 @@ class ModifyDialog : public QDialog
 
 public:
     explicit ModifyDialog(QWidget *parent = nullptr);
+private slots:
+    void onConfirmClicked();
 };
 
 #endif // MODIFYLESSONS_H
+;

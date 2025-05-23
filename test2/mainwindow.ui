@@ -93,7 +93,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>PushButton</string>
+     <string>modify</string>
     </property>
    </widget>
   </widget>
