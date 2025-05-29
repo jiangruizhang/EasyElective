@@ -17,8 +17,8 @@
    <widget class="QListWidget" name="allCourses">
     <property name="geometry">
      <rect>
-      <x>40</x>
-      <y>60</y>
+      <x>30</x>
+      <y>50</y>
       <width>251</width>
       <height>251</height>
      </rect>
