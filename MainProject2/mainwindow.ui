@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QListWidget" name="allCourses">
+   <widget class="QListWidget" name="unselectedCourses">
     <property name="geometry">
      <rect>
       <x>30</x>
@@ -24,7 +24,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="modifyCoursesButton">
+   <widget class="QPushButton" name="addCourses">
     <property name="geometry">
      <rect>
       <x>50</x>
@@ -34,7 +34,20 @@
      </rect>
     </property>
     <property name="text">
-     <string>修改课程</string>
+     <string>添加课程</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="courseInfo">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>310</y>
+      <width>151</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>courseinfo</string>
     </property>
    </widget>
   </widget>

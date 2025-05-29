@@ -1,3 +1,9 @@
+#ifndef COURSE_H
+#define COURSE_H
+
+
+#include <QMetaType>
+#include <QString>
 #include <vector>
 #include <string>
 #include <iostream>
@@ -5,7 +11,7 @@
 using namespace std;
 class classtime{
 private:
-    int day,ti;
+    int day,ti; //  day 1-7 , ti 1-12
 public:
     classtime(){day=0,ti=0;}
     classtime(int x,int y){day=x,ti=y;}
@@ -34,7 +40,7 @@ private:
     string CourseName,TeacherName;
     //int Teachers_points; //教师得分
     int Your_intension; //意愿值 1~99
-    int have_chosen,quota;
+    int have_chosen,quota; // 已选 ，限选
 public:
     int oAss_Points; //当前分配的点数，载入时的值无意义，Organize后的值为推荐投点数
     Course();
@@ -45,9 +51,11 @@ public:
     void setCourseName(string name);
     void setTeacherName(string name);
     void setIntension(int intension);
-    bool getIfMust();
+    bool getIfMust() const;
     int getPoints() const;
-    int getInten();
+    int getInten() const;
+    string getCourseName() const;
+    string getTeacherName() const;
     bool Conflict(const Course &x); //判断课程时间是否冲突
     int near(const Course &x); //判断是否连堂课
     int Zao8();// 判断是否早8
@@ -55,6 +63,11 @@ public:
     double Compe_Value();
     double getP();
 };
+
+Q_DECLARE_METATYPE(Course)
+
+
+
 class Organize_Result{
 private:
     vector<Course> Course_list;
@@ -65,4 +78,10 @@ public:
     Organize_Result(vector<Course> Cl,int AP);
     void Update(const Organize_Result &x);
 };
+
+
+
 Organize_Result Organize(vector<Course> kx_Course,Requirement need);
+
+
+#endif // COURSE_H

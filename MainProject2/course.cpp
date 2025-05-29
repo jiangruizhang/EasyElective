@@ -133,9 +133,11 @@ void Course::setIfMust(bool must = 0){if_must=must;}
 void Course::setCourseName(string name = ""){CourseName=name;}
 void Course::setTeacherName(string name = ""){TeacherName=name;}
 void Course::setIntension(int intension = 0){Your_intension=intension;}
-bool Course::getIfMust(){return if_must;}
+bool Course::getIfMust() const {return if_must;}
 int Course::getPoints() const{return points;}
-int Course::getInten(){return Your_intension;}
+int Course::getInten() const {return Your_intension;}
+string Course::getCourseName() const { return CourseName;};
+string Course::getTeacherName() const { return TeacherName;};
 bool Course::Conflict(const Course &x){
     int n1=q.size(),n2=x.q.size();
     for(int i=0; i<n1; ++i)

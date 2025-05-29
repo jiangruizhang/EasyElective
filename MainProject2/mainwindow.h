@@ -19,5 +19,6 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void addCourseWindow();
 };
 #endif // MAINWINDOW_H
