@@ -22,6 +22,7 @@ public:
 private:
     Ui::MainWindow *ui;
     void displayBasicInfo(const Course &course);
+    void displaySchedule();
 private slots:
     void addCourseWindow();
     void removeCourseWindow();

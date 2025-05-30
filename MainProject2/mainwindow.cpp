@@ -44,13 +44,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->schedule->setSelectionMode(QAbstractItemView :: NoSelection);
     for (int row = 0; row < ui->schedule->rowCount(); ++row) {
         for (int col = 0; col < ui->schedule->columnCount(); ++col) {
-            if (!ui->schedule->item(row, col)) {
-                ui->schedule->setItem(row, col, new QTableWidgetItem(""));
-            }
-            QTableWidgetItem *item = ui->schedule->item(row, col);
-            item->setFlags(item->flags() & ~Qt::ItemIsEditable); // 禁止编辑
+            ui->schedule->setCellWidget(row, col, new QTextBrowser());
         }
     }
+    displaySchedule();
 }
 
 MainWindow::~MainWindow()
@@ -88,20 +85,38 @@ void MainWindow::removeCourseWindow() {
 }
 
 void MainWindow :: unselectedToSeleted(QListWidgetItem *item) {
-    // ui->selectedCourses->addItem(item);
     QListWidgetItem *newItem = new QListWidgetItem(item->text());
     newItem->setData(Qt::UserRole, item->data(Qt::UserRole));
     ui->selectedCourses->addItem(newItem);
 
     int row = ui->unselectedCourses->row(item);
     delete ui->unselectedCourses->takeItem(row);
+
+    displaySchedule();
 }
 void MainWindow :: selectedToUnselected(QListWidgetItem *item) {
-    // ui->unselectedCourses->addItem(item);
     QListWidgetItem *newItem = new QListWidgetItem(item->text());
     newItem->setData(Qt::UserRole, item->data(Qt::UserRole));
     ui->unselectedCourses->addItem(newItem);
 
     int row = ui->selectedCourses->row(item);
     delete ui->selectedCourses->takeItem(row);
+
+    displaySchedule();
+}
+void MainWindow :: displaySchedule() {
+    for (int row = 0; row < ui->schedule->rowCount(); ++row) {
+        for (int col = 0; col < ui->schedule->columnCount(); ++col) {
+            QTextBrowser* browser = qobject_cast<QTextBrowser*>(ui->schedule->cellWidget(row, col));
+            browser->clear();
+        }
+    }
+    for (int i = 0; i < ui->selectedCourses->count(); ++i) {
+        Course c = ui->selectedCourses->item(i)->data(Qt::UserRole).value<Course>();
+        for (classtime lesson : c.getClasstime()) {
+            int col = lesson.getday() - 1, row = lesson.getti() - 1;
+            QTextBrowser* browser = qobject_cast<QTextBrowser*>(ui->schedule->cellWidget(row, col));
+            browser->append(toQString(c.getCourseName() + "-" + c.getTeacherName()));
+        }
+    }
 }
