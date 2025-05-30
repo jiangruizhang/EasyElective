@@ -18,7 +18,7 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>50</y>
+      <y>20</y>
       <width>251</width>
       <height>251</height>
      </rect>
@@ -27,8 +27,8 @@
    <widget class="QPushButton" name="addCourses">
     <property name="geometry">
      <rect>
-      <x>50</x>
-      <y>550</y>
+      <x>30</x>
+      <y>530</y>
       <width>101</width>
       <height>32</height>
      </rect>
@@ -37,17 +37,27 @@
      <string>添加课程</string>
     </property>
    </widget>
-   <widget class="QLabel" name="courseInfo">
+   <widget class="QPushButton" name="removeCourse">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>310</y>
-      <width>151</width>
-      <height>51</height>
+      <x>150</x>
+      <y>530</y>
+      <width>101</width>
+      <height>32</height>
      </rect>
     </property>
     <property name="text">
-     <string>courseinfo</string>
+     <string>删除课程</string>
+    </property>
+   </widget>
+   <widget class="QTextBrowser" name="courseInfo">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>290</y>
+      <width>251</width>
+      <height>141</height>
+     </rect>
     </property>
    </widget>
   </widget>

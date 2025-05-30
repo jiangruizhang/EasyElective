@@ -2,6 +2,7 @@
 #define REMOVECOURSE_H
 
 #include <QDialog>
+#include <QListWidget>
 
 namespace Ui {
 class RemoveCourse;
@@ -12,8 +13,12 @@ class RemoveCourse : public QDialog
     Q_OBJECT
 
 public:
-    explicit RemoveCourse(QWidget *parent = nullptr);
+    explicit RemoveCourse(const QStringList &items, QWidget *parent = nullptr);
     ~RemoveCourse();
+signals:
+    void itemsToRemove(const QStringList &selectedItems);
+private slots:
+    void confirmButtonClicked();
 
 private:
     Ui::RemoveCourse *ui;

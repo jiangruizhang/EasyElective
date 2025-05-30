@@ -20,7 +20,9 @@ signals:
 
 private:
     Ui::addCourses *ui;
+private slots:
     void transCourseInfo();
+    void fortest();
 };
 
 #endif // ADDCOURSES_H

@@ -19,6 +19,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
+private slots:
     void addCourseWindow();
+    void removeCourseWindow();
 };
 #endif // MAINWINDOW_H

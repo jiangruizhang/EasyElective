@@ -56,6 +56,10 @@ public:
     int getInten() const;
     string getCourseName() const;
     string getTeacherName() const;
+    int getHaveChosen() const;
+    int getQuota() const;
+    void addClasstime(int day, int ti);
+    vector<classtime> getClasstime() const;
     bool Conflict(const Course &x); //判断课程时间是否冲突
     int near(const Course &x); //判断是否连堂课
     int Zao8();// 判断是否早8
