@@ -47,6 +47,8 @@ void addCourses :: transCourseInfo() {
     course.setPoints(ui->coursePoint->text().toInt());
     course.setIntension(ui->intension->text().toInt());
     course.setIfMust(ui->ifMust->isChecked());
+    course.setQuota(ui->limit->text().toInt());
+    course.setHaveChosen(ui->nowSelected->text().toInt());
     QList<QTableWidgetItem*> selectedItems = ui->courseSchedule->selectedItems();
     for (QTableWidgetItem *item : selectedItems) {
         int row = item->row();

@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QListWidget>
+#include "course.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,8 +21,11 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void displayBasicInfo(const Course &course);
 private slots:
     void addCourseWindow();
     void removeCourseWindow();
+    void unselectedToSeleted(QListWidgetItem *item);
+    void selectedToUnselected(QListWidgetItem *item);
 };
 #endif // MAINWINDOW_H

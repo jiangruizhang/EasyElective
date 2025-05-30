@@ -133,6 +133,10 @@ void Course::setIfMust(bool must = 0){if_must=must;}
 void Course::setCourseName(string name = ""){CourseName=name;}
 void Course::setTeacherName(string name = ""){TeacherName=name;}
 void Course::setIntension(int intension = 0){Your_intension=intension;}
+void Course::setQuota(int limit = 0) { quota = limit;};
+void Course::setHaveChosen(int p = 0) { have_chosen = p;};
+void Course :: addClasstime(int day, int ti) { q.emplace_back(day, ti);}
+
 bool Course::getIfMust() const {return if_must;}
 int Course::getPoints() const{return points;}
 int Course::getInten() const {return Your_intension;}
@@ -140,8 +144,8 @@ string Course::getCourseName() const { return CourseName;};
 string Course::getTeacherName() const { return TeacherName;};
 int Course :: getHaveChosen() const { return have_chosen;};
 int Course :: getQuota() const { return quota;};
-void Course :: addClasstime(int day, int ti) { q.emplace_back(day, ti);}
 vector<classtime> Course:: getClasstime() const { return q;};
+
 bool Course::Conflict(const Course &x){
     int n1=q.size(),n2=x.q.size();
     for(int i=0; i<n1; ++i)

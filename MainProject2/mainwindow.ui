@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1077</width>
-    <height>683</height>
+    <width>1131</width>
+    <height>702</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,15 +20,15 @@
       <x>30</x>
       <y>20</y>
       <width>251</width>
-      <height>251</height>
+      <height>221</height>
      </rect>
     </property>
    </widget>
    <widget class="QPushButton" name="addCourses">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>530</y>
+      <x>150</x>
+      <y>600</y>
       <width>101</width>
       <height>32</height>
      </rect>
@@ -40,8 +40,8 @@
    <widget class="QPushButton" name="removeCourse">
     <property name="geometry">
      <rect>
-      <x>150</x>
-      <y>530</y>
+      <x>270</x>
+      <y>600</y>
       <width>101</width>
       <height>32</height>
      </rect>
@@ -54,10 +54,180 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>290</y>
+      <y>270</y>
       <width>251</width>
       <height>141</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>0</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>可选课程</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>250</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>课程信息</string>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="selectedCourses">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>440</y>
+      <width>251</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>420</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>已选课程</string>
+    </property>
+   </widget>
+   <widget class="QTableWidget" name="schedule">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>20</y>
+      <width>801</width>
+      <height>581</height>
+     </rect>
+    </property>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>45</number>
+    </attribute>
+    <row>
+     <property name="text">
+      <string>8:00-8:50</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>9:00-9:50</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>10:10-11:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>11:10-12:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>13:00-13:50</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>14:00-14:50</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>15:10-16:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>16:10-17:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>17:10-18:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>18:40-19:30</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>19:40-20:30</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>20:40-21:30</string>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>星期一</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期二</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期三</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期四</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期五</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期六</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期日</string>
+     </property>
+    </column>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>310</x>
+      <y>0</y>
+      <width>58</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>课表</string>
     </property>
    </widget>
   </widget>
@@ -66,8 +236,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1077</width>
-     <height>24</height>
+     <width>1131</width>
+     <height>37</height>
     </rect>
    </property>
   </widget>

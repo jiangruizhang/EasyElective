@@ -51,6 +51,8 @@ public:
     void setCourseName(string name);
     void setTeacherName(string name);
     void setIntension(int intension);
+    void setQuota(int limit);
+    void setHaveChosen(int p);
     bool getIfMust() const;
     int getPoints() const;
     int getInten() const;

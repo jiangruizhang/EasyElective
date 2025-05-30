@@ -4,6 +4,21 @@
 #include "removecourse.h"
 
 const string __daytime[7] = {"一", "二", "三", "四", "五", "六", "日"};
+void MainWindow :: displayBasicInfo(const Course &course) {
+    QString info;
+    info += QString("课程名称: %1\n").arg(course.getCourseName());
+    info += QString("学分: %1\n").arg(course.getPoints());
+    info += QString("任课教师: %1\n").arg(course.getTeacherName());
+    info += QString("是否必修: %1\n").arg(course.getIfMust() ? "是" : "否");
+    info += QString("限选: %1\n").arg(course.getQuota());
+    info += QString("已选: %1\n").arg(course.getHaveChosen());
+    info += QString("上课时间:\n");
+    for (classtime lesson : course.getClasstime()) {
+        info += QString("星期%1 第 %2 节\n").arg(__daytime[lesson.getday() - 1]).arg(lesson.getti());
+    }
+    ui->courseInfo->setText(info);  // 假设你有一个 QLabel
+}
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -17,22 +32,25 @@ MainWindow::MainWindow(QWidget *parent)
     //     qDebug() << "点击了：" << item->text();
     // });
     connect(ui->unselectedCourses, &QListWidget::itemClicked, this, [=](QListWidgetItem *item){
-        Course c = item->data(Qt::UserRole).value<Course>();/*
-        QString info = QString("课程名称: %1\n学分: %2\n任课教师: %3\n是否必修: %4\n限选: %5\n已选: %6\n")
-                           .arg(c.getCourseName()).arg(c.getPoints()).arg(c.getTeacherName()).arg(c.getIfMust() ? "是" : "否").arg(c.getQuota()).arg(c.getHaveChosen());*/
-        QString info;
-        info += QString("课程名称: %1\n").arg(c.getCourseName());
-        info += QString("学分: %1\n").arg(c.getPoints());
-        info += QString("任课教师: %1\n").arg(c.getTeacherName());
-        info += QString("是否必修: %1\n").arg(c.getIfMust() ? "是" : "否");
-        info += QString("限选: %1\n").arg(c.getQuota());
-        info += QString("已选: %1\n").arg(c.getHaveChosen());
-        info += QString("上课时间:\n");
-        for (classtime lesson : c.getClasstime()) {
-            info += QString("星期%1 第 %2 节\n").arg(__daytime[lesson.getday() - 1]).arg(lesson.getti());
-        }
-        ui->courseInfo->setText(info);  // 假设你有一个 QLabel
+        Course c = item->data(Qt::UserRole).value<Course>();
+        displayBasicInfo(c);
     });
+    connect(ui->selectedCourses, &QListWidget::itemClicked, this, [=](QListWidgetItem *item){
+        Course c = item->data(Qt::UserRole).value<Course>();
+        displayBasicInfo(c);
+    });
+    connect(ui->unselectedCourses, &QListWidget :: itemDoubleClicked, this, &MainWindow :: unselectedToSeleted);
+    connect(ui->selectedCourses, &QListWidget :: itemDoubleClicked, this, &MainWindow :: selectedToUnselected);
+    ui->schedule->setSelectionMode(QAbstractItemView :: NoSelection);
+    for (int row = 0; row < ui->schedule->rowCount(); ++row) {
+        for (int col = 0; col < ui->schedule->columnCount(); ++col) {
+            if (!ui->schedule->item(row, col)) {
+                ui->schedule->setItem(row, col, new QTableWidgetItem(""));
+            }
+            QTableWidgetItem *item = ui->schedule->item(row, col);
+            item->setFlags(item->flags() & ~Qt::ItemIsEditable); // 禁止编辑
+        }
+    }
 }
 
 MainWindow::~MainWindow()
@@ -67,4 +85,23 @@ void MainWindow::removeCourseWindow() {
         }
     });
     removeDialog->exec();
+}
+
+void MainWindow :: unselectedToSeleted(QListWidgetItem *item) {
+    // ui->selectedCourses->addItem(item);
+    QListWidgetItem *newItem = new QListWidgetItem(item->text());
+    newItem->setData(Qt::UserRole, item->data(Qt::UserRole));
+    ui->selectedCourses->addItem(newItem);
+
+    int row = ui->unselectedCourses->row(item);
+    delete ui->unselectedCourses->takeItem(row);
+}
+void MainWindow :: selectedToUnselected(QListWidgetItem *item) {
+    // ui->unselectedCourses->addItem(item);
+    QListWidgetItem *newItem = new QListWidgetItem(item->text());
+    newItem->setData(Qt::UserRole, item->data(Qt::UserRole));
+    ui->unselectedCourses->addItem(newItem);
+
+    int row = ui->selectedCourses->row(item);
+    delete ui->selectedCourses->takeItem(row);
 }

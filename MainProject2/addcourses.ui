@@ -24,7 +24,7 @@
    </property>
    <layout class="QGridLayout" name="basicInfo">
     <item row="5" column="1">
-     <widget class="QLineEdit" name="nowSeleted"/>
+     <widget class="QLineEdit" name="nowSelected"/>
     </item>
     <item row="3" column="1">
      <widget class="QCheckBox" name="ifMust">
