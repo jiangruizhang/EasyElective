@@ -6,6 +6,7 @@ from ui_addcourse import Ui_AddCourse
 import pickle
 from pathlib import Path
 from course import Course
+import secrets
 
 class AddCourse(QDialog):
     sendcourse = Signal(Course)
@@ -48,6 +49,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.load()
         self.ui.addCourse.clicked.connect(self.openAddCourse)
     
     def openAddCourse(self):
@@ -55,18 +57,34 @@ class MainWindow(QMainWindow):
         self.addcourse.sendcourse.connect(self.newcourse)
         self.addcourse.exec()
     def newcourse(self, course : Course):
-        pass
-        # qDebug('---new course---')
-        # qDebug(course.course)
-        # qDebug(course.teacher)
-        # for (day, time) in course.schedule:
-        #     qDebug(f'{day} {time}')
+        self.save(course)
+        self.ui.toselect.addItem(course.course)
+
     def load(self):
         # 从文件读取所有课程信息
-        pass 
+        self.courseindex = set()
+        data = Path('data')
+        data.mkdir(exist_ok = True)  # 如果目录已存在不会报错
+        courses = [item for item in data.iterdir() if item.is_file()]
+        for item in courses:
+            self.courseindex.add(item.name)
+            with open(item, 'rb') as f:
+                course = pickle.load(f)
+            if course.selected == False:
+                self.ui.toselect.addItem(course.course)
+            else:
+                self.ui.selected.addItem(course.course)
     def save(self, course):
         # 保存课程信息到文件
-        pass
+        index = secrets.token_bytes(32).hex()
+        while index in self.courseindex:
+            index = secrets.token_bytes(32).hex()
+        data = Path('data')
+        data.mkdir(exist_ok = True)
+        data = data / index
+        with open(data, 'wb') as f:
+            pickle.dump(course, f)
+        self.courseindex.add(index)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
