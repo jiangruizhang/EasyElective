@@ -1,0 +1,16 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: PySide6 App",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/app.py",  // 替换为你的主程序文件
+            "console": "integratedTerminal",
+            "justMyCode": false,  // 允许调试 Qt 库代码
+            "env": {
+                "QT_DEBUG_PLUGINS": "1"  // 可选：启用 Qt 插件调试
+            }
+        }
+    ]
+}
