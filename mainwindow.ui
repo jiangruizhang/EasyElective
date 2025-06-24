@@ -115,7 +115,7 @@
      <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
     </property>
     <property name="selectionMode">
-     <enum>QAbstractItemView::SelectionMode::MultiSelection</enum>
+     <enum>QAbstractItemView::SelectionMode::NoSelection</enum>
     </property>
     <attribute name="horizontalHeaderMinimumSectionSize">
      <number>19</number>

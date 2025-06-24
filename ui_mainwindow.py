@@ -96,7 +96,7 @@ class Ui_MainWindow(object):
         self.schedule.setObjectName(u"schedule")
         self.schedule.setGeometry(QRect(280, 40, 701, 581))
         self.schedule.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
-        self.schedule.setSelectionMode(QAbstractItemView.SelectionMode.MultiSelection)
+        self.schedule.setSelectionMode(QAbstractItemView.SelectionMode.NoSelection)
         self.schedule.horizontalHeader().setMinimumSectionSize(19)
         self.schedule.horizontalHeader().setDefaultSectionSize(80)
         self.schedule.verticalHeader().setDefaultSectionSize(46)

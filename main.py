@@ -17,7 +17,7 @@ class AddCourse(QDialog):
         for row in range(self.ui.schedule.rowCount()):
             for col in range(self.ui.schedule.columnCount()):
                 if self.ui.schedule.item(row, col) is None:
-                    self.ui.schedule.setItem(row, col, QTableWidgetItem(""))
+                    self.ui.schedule.setItem(row, col, QTableWidgetItem(''))
         self.ui.finish.clicked.connect(self.newcourse)
         self.ui.cancel.clicked.connect(self.close)
         self.courseindex = courseindex
@@ -56,6 +56,10 @@ class MainWindow(QMainWindow):
         self.ui.selected.itemClicked.connect(self.displaycourse)
         self.ui.toselect.itemDoubleClicked.connect(self.to2ed)
         self.ui.selected.itemDoubleClicked.connect(self.ed2to)
+        for row in range(self.ui.schedule.rowCount()):
+            for col in range(self.ui.schedule.columnCount()):
+                if self.ui.schedule.item(row, col) is None:
+                    self.ui.schedule.setItem(row, col, QTableWidgetItem(''))
         self.load()
     
     def openAddCourse(self):
@@ -68,19 +72,19 @@ class MainWindow(QMainWindow):
         course.selected = True
         self.save(course)
         self.load()
-        pass
+
     def ed2to(self, item):
         course = item.data(Qt.ItemDataRole.UserRole)
         course.selected = False
         self.save(course)
         self.load()
-        pass
 
     def newcourse(self, course : Course):
         self.save(course)
-        item = QListWidgetItem(f'{course.course} - {course.teacher} - {course.point}')
-        item.setData(Qt.ItemDataRole.UserRole, course)
-        self.ui.toselect.addItem(item)
+        self.load()
+        # item = QListWidgetItem(f'{course.course} - {course.teacher} - {course.point}')
+        # item.setData(Qt.ItemDataRole.UserRole, course)
+        # self.ui.toselect.addItem(item)
 
     def displaycourse(self, item):
         course = item.data(Qt.ItemDataRole.UserRole)
@@ -91,6 +95,20 @@ class MainWindow(QMainWindow):
                        f'选课情况：{course.chosen} / {course.limit}\n',
                        f'课程类型：{'必修' if course.must else '非必修'}']
         self.ui.courseInfo.setPlainText(''.join(displayinfo))
+
+    def flushschedule(self):
+        temp = [['' for j in range(self.ui.schedule.columnCount())] for i in range(self.ui.schedule.rowCount())]
+        for i in range(self.ui.selected.count()):
+            item = self.ui.selected.item(i)
+            course = item.data(Qt.ItemDataRole.UserRole)
+            for (day, time) in course.schedule:
+                if len(temp[day - 1][time - 1]) > 0:
+                    temp[day - 1][time - 1] += '\n'
+                temp[day - 1][time - 1] += f'{course.course} - {course.teacher}'
+        for i in range(self.ui.schedule.rowCount()):
+            for j in range(self.ui.schedule.columnCount()):
+                self.ui.schedule.setItem(i, j, QTableWidgetItem(temp[i][j]))
+
 
     def load(self):
         # 从文件读取所有课程信息
@@ -112,6 +130,8 @@ class MainWindow(QMainWindow):
                 self.ui.toselect.addItem(item)
             else:
                 self.ui.selected.addItem(item)
+        self.flushschedule()
+
     def save(self, course):
         # 保存课程信息到文件
         self.courseindex.add(course.index)

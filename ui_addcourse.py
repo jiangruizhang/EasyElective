@@ -23,7 +23,7 @@ class Ui_AddCourse(object):
     def setupUi(self, AddCourse):
         if not AddCourse.objectName():
             AddCourse.setObjectName(u"AddCourse")
-        AddCourse.resize(1170, 714)
+        AddCourse.resize(955, 364)
         self.finish = QPushButton(AddCourse)
         self.finish.setObjectName(u"finish")
         self.finish.setGeometry(QRect(30, 310, 100, 32))
