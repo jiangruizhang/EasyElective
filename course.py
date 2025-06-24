@@ -13,6 +13,11 @@ class Course:
         self.chosen = 0         # 已选人数
         self.limit = 0          # 限选人数
         self.selected = False   # 是否选择，默认为不选的状态
+        self.index = 0          # 随机的 256bit 编号
         # 用户的情况
         self.intension = 0      # 上这门课的意愿值，用 1 ～ 99 衡量
+    def __repr__(self):
+        return '<course>'
+    def __str__(self):
+        return f'{self.course} - {self.teacher} - {self.point}'
     # TO THINK : 是否要区分 set 和 get ？

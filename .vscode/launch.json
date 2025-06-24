@@ -5,7 +5,7 @@
             "name": "Python: PySide6 App",
             "type": "python",
             "request": "launch",
-            "program": "${workspaceFolder}/app.py",  // 替换为你的主程序文件
+            "program": "${workspaceFolder}/main.py",  // 替换为你的主程序文件
             "console": "integratedTerminal",
             "justMyCode": false,  // 允许调试 Qt 库代码
             "env": {
