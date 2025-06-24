@@ -102,6 +102,126 @@
      <string>添加课程</string>
     </property>
    </widget>
+   <widget class="QTableWidget" name="schedule">
+    <property name="geometry">
+     <rect>
+      <x>280</x>
+      <y>40</y>
+      <width>701</width>
+      <height>581</height>
+     </rect>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+    </property>
+    <property name="selectionMode">
+     <enum>QAbstractItemView::SelectionMode::MultiSelection</enum>
+    </property>
+    <attribute name="horizontalHeaderMinimumSectionSize">
+     <number>19</number>
+    </attribute>
+    <attribute name="horizontalHeaderDefaultSectionSize">
+     <number>80</number>
+    </attribute>
+    <attribute name="verticalHeaderDefaultSectionSize">
+     <number>46</number>
+    </attribute>
+    <row>
+     <property name="text">
+      <string>第一节8:00-8:50</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第二节9:00-9:50</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第三节10:10-11:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第四节11:10-12:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第五节13:00-13:50</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第六节14:00-14:50</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第七节15:10-16:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第八节16:10-17:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第九节17:10-18:00</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第十节18:40-19:30</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第十一节19:40-20:30</string>
+     </property>
+    </row>
+    <row>
+     <property name="text">
+      <string>第十二节20:40-21:30</string>
+     </property>
+    </row>
+    <column>
+     <property name="text">
+      <string>星期一</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期二</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期三</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期四</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期五</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期六</string>
+     </property>
+    </column>
+    <column>
+     <property name="text">
+      <string>星期天</string>
+     </property>
+    </column>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
