@@ -100,6 +100,15 @@ class Ui_MainWindow(object):
         self.schedule.horizontalHeader().setMinimumSectionSize(19)
         self.schedule.horizontalHeader().setDefaultSectionSize(80)
         self.schedule.verticalHeader().setDefaultSectionSize(46)
+        self.modifyCourse = QPushButton(self.centralwidget)
+        self.modifyCourse.setObjectName(u"modifyCourse")
+        self.modifyCourse.setGeometry(QRect(140, 630, 100, 32))
+        self.organize = QPushButton(self.centralwidget)
+        self.organize.setObjectName(u"organize")
+        self.organize.setGeometry(QRect(250, 630, 100, 32))
+        self.finish = QPushButton(self.centralwidget)
+        self.finish.setObjectName(u"finish")
+        self.finish.setGeometry(QRect(360, 630, 100, 32))
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
@@ -158,5 +167,8 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem17.setText(QCoreApplication.translate("MainWindow", u"\u7b2c\u5341\u4e00\u828219:40-20:30", None));
         ___qtablewidgetitem18 = self.schedule.verticalHeaderItem(11)
         ___qtablewidgetitem18.setText(QCoreApplication.translate("MainWindow", u"\u7b2c\u5341\u4e8c\u828220:40-21:30", None));
+        self.modifyCourse.setText(QCoreApplication.translate("MainWindow", u"\u4fee\u6539\u8bfe\u7a0b", None))
+        self.organize.setText(QCoreApplication.translate("MainWindow", u"\u63a8\u8350\u9009\u8bfe", None))
+        self.finish.setText(QCoreApplication.translate("MainWindow", u"\u9000\u51fa", None))
     # retranslateUi
 

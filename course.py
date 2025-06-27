@@ -21,3 +21,7 @@ class Course:
     def __str__(self):
         return f'{self.course} - {self.teacher} - {self.point}'
     # TO THINK : 是否要区分 set 和 get ？
+
+def organize(courses : list[Course] = []):
+    # 返回二元组，第一个为 True/False 表示是否有合法方案，第二是 list[Course] 通过 selected 来表示选不选
+    pass

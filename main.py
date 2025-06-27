@@ -1,11 +1,13 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QTableWidgetItem, QListWidgetItem
+from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QTableWidgetItem, QListWidgetItem, QListWidget
 from PySide6.QtCore import Signal, qDebug, Qt
 from ui_mainwindow import Ui_MainWindow 
 from ui_addcourse import Ui_AddCourse
+from ui_modifycourse import Ui_ModifyCourse
 import pickle
 from pathlib import Path
-from course import Course
+from course import Course, organize
+import copy
 import secrets
 
 class AddCourse(QDialog):
@@ -31,7 +33,7 @@ class AddCourse(QDialog):
         course = Course()
         course.course = self.ui.course.toPlainText()
         course.teacher = self.ui.teacher.toPlainText()
-        course.limit = getint(self.ui.teacher.toPlainText())
+        course.limit = getint(self.ui.limit.toPlainText())
         course.chosen = getint(self.ui.chosen.toPlainText())
         course.intension = getint(self.ui.intension.toPlainText())
         course.point = getint(self.ui.point.toPlainText())
@@ -44,7 +46,120 @@ class AddCourse(QDialog):
         course.index = index
         self.sendcourse.emit(course)
         self.close()
+
+class ModifyCourse(QDialog):
+    currentindex = None
+    def __init__(self, parent = None):
+        super().__init__(parent)
+        self.ui = Ui_ModifyCourse()
+        self.ui.setupUi(self)
+        self.ui.toselect.itemClicked.connect(self.displaycourse)
+        self.ui.confirm.clicked.connect(self.savecourse)
+        self.ui.remove.clicked.connect(self.removecourse)
+        self.ui.close.clicked.connect(self.close)
+        for i in range(self.ui.schedule.rowCount()):
+            for j in range(self.ui.schedule.columnCount()):
+                self.ui.schedule.setItem(i, j, QTableWidgetItem(''))
+                self.ui.schedule.item(i, j).setSelected(False)
+        self.load()
+        # for i in range(toselect.count()):
+        #     item = QListWidgetItem(toselect.item(i).text())
+        #     item.setData(Qt.ItemDataRole.UserRole, toselect.item(i).data(Qt.ItemDataRole.UserRole))
+        #     self.ui.toselect.addItem(item)
+
+    def savecourse(self):
+        self.save()
+        self.load()
+        self.parent().load()
+
+    def removecourse(self):
+        self.remove()
+        self.load()
+        self.parent().load()
+
+    def displaycourse(self, item):
+        course : Course = item.data(Qt.ItemDataRole.UserRole)
+        self.currentindex = course.index
+        self.ui.course.setPlainText(course.course)
+        self.ui.teacher.setPlainText(course.teacher)
+        self.ui.point.setPlainText(str(course.point))
+        self.ui.chosen.setPlainText(str(course.chosen))
+        self.ui.limit.setPlainText(str(course.limit))
+        self.ui.intension.setPlainText(str(course.intension))
+        self.ui.must.setChecked(course.must)
+        for i in range(self.ui.schedule.rowCount()):
+            for j in range(self.ui.schedule.columnCount()):
+                self.ui.schedule.item(i, j).setSelected(False)
+        for (day, time) in course.schedule:
+            # qDebug(f'{day} {time}')
+            self.ui.schedule.item(time - 1, day - 1).setSelected(True)
+
+    def load(self):
+        # 从文件读取课程
+        self.ui.toselect.clear()
+
+        data = Path('data')
+        data.mkdir(exist_ok = True)  # 如果目录已存在不会报错
+        courses = [item for item in data.iterdir() if item.is_file()]
+        for item in courses:
+            with open(item, 'rb') as f:
+                course = pickle.load(f)
+            item = QListWidgetItem(f'{course.course} - {course.teacher} - {course.point}')
+            item.setData(Qt.ItemDataRole.UserRole, course)
+            if course.selected == False:
+                self.ui.toselect.addItem(item)
+    
+    def save(self):
+        # 保存当前修改的课程
+        if self.currentindex is None:
+            qDebug('no selection')
+            return
+        # qDebug(str(self.currentindex))
+        def getint(text, default = 0):
+            try:
+                return int(text)
+            except:
+                return default
         
+        # qDebug(f' ** debuginfo ** : limit  = {self.ui.limit.toPlainText()}')
+
+        course = Course()
+        course.course = self.ui.course.toPlainText()
+        course.teacher = self.ui.teacher.toPlainText()
+        course.limit = getint(self.ui.limit.toPlainText())
+        course.chosen = getint(self.ui.chosen.toPlainText())
+        course.intension = getint(self.ui.intension.toPlainText())
+        course.point = getint(self.ui.point.toPlainText())
+        course.must = self.ui.must.isChecked()
+        for item in self.ui.schedule.selectedItems():
+            course.schedule.append((item.column() + 1, item.row() + 1))
+        course.index = self.currentindex
+
+
+        # displayinfo = [f'课程名称：{course.course}\n',
+        #                f'教师名称：{course.teacher}\n',
+        #                f'课程学分：{course.point}\n',
+        #                f'选课情况：{course.chosen} / {course.limit}\n',
+        #                f'课程类型：{'必修' if course.must else '非必修'}']
+        # qDebug(''.join(displayinfo))
+
+        
+        data = Path('data')
+        data.mkdir(exist_ok = True)
+        data = data / course.index
+        with open(data, 'wb') as f:
+            pickle.dump(course, f)
+    
+    def remove(self):
+        # 删除当前修改的课程
+        if self.currentindex is None:
+            qDebug('no selection')
+            return
+        data = Path('data')
+        data.mkdir(exist_ok = True)
+        data = data / self.currentindex
+        if data.exists():
+            data.unlink()
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -52,6 +167,8 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.ui.addCourse.clicked.connect(self.openAddCourse)
+        self.ui.modifyCourse.clicked.connect(self.openModifyCourse)
+        self.ui.finish.clicked.connect(self.close)
         self.ui.toselect.itemClicked.connect(self.displaycourse)
         self.ui.selected.itemClicked.connect(self.displaycourse)
         self.ui.toselect.itemDoubleClicked.connect(self.to2ed)
@@ -82,9 +199,6 @@ class MainWindow(QMainWindow):
     def newcourse(self, course : Course):
         self.save(course)
         self.load()
-        # item = QListWidgetItem(f'{course.course} - {course.teacher} - {course.point}')
-        # item.setData(Qt.ItemDataRole.UserRole, course)
-        # self.ui.toselect.addItem(item)
 
     def displaycourse(self, item):
         course = item.data(Qt.ItemDataRole.UserRole)
@@ -108,7 +222,6 @@ class MainWindow(QMainWindow):
         for i in range(self.ui.schedule.rowCount()):
             for j in range(self.ui.schedule.columnCount()):
                 self.ui.schedule.setItem(i, j, QTableWidgetItem(temp[i][j]))
-
 
     def load(self):
         # 从文件读取所有课程信息
@@ -140,6 +253,24 @@ class MainWindow(QMainWindow):
         data = data / course.index
         with open(data, 'wb') as f:
             pickle.dump(course, f)
+
+    def openModifyCourse(self):
+        self.modifycourse = ModifyCourse(self)
+        # self.addcourse.sendcourse.connect(self.newcourse)
+        self.modifycourse.exec()
+    
+    def autoarrange(self):
+        courses = []
+        for i in range(self.ui.selected.count()):
+            item = self.ui.selected.item(i)
+            courses.append(item.data(Qt.ItemDataRole.UserRole))
+        p, courses = organize(courses)
+        if p == True:
+            for course in courses:
+                self.save(course)
+            self.load()
+        else:
+            qDebug('Something wrong')
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
