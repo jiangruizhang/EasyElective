@@ -3,7 +3,7 @@
 bool classtime::near(const classtime &x){
     if(day==x.day&&abs(ti-x.ti)==1)return true;
     return false;
-}
+} 
 int classtime::getti(){return ti;}
 int classtime::getday(){return day;}
 Course :: Course() {}

@@ -22,6 +22,20 @@ class Course:
     #     return f'{self.course} - {self.teacher} - {self.point}'
     # TO THINK : 是否要区分 set 和 get ？
 
+class Req:
+    def __init__(self, ap = 99, lb = 20, ub = 30):
+        self.ap = ap
+        self.lb = lb
+        self.ub = ub
+    def over(self, s):
+        return s > self.ub
+    def less(self, s):
+        return s < self.lb
+    
+class Res:
+    def __init__(self):
+        pass
+
 def organize(courses : list[Course] = []):
     # 返回二元组，第一个为 True/False 表示是否有合法方案，第二是 list[Course] 通过 selected 来表示选不选
     pass
