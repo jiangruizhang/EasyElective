@@ -13,7 +13,7 @@ class Course:
         self.course = ''        # 课程名字
         self.teacher = ''       # 老师名字
         self.chosen = 0         # 已选人数
-        self.limit = 0          # 限选人数
+        self.limit = 1          # 限选人数
         self.selected = False   # 是否选择，默认为不选的状态
         self.index = 0          # 随机的 256bit 编号
         # 用户的情况
@@ -105,17 +105,17 @@ class Res:
             elif classes <=2:
                 self.val += 500 # 少课日奖励
             elif classes >= 6:
-                self.val -=15 * (classes - 6) ** 3 # 多课日惩罚
+                self.val -= 15 * (classes - 6) ** 3 # 多课日惩罚
         # 投点分配
-        total = 0
+        total = 0.1
         for course in self.courses:
             course.assignpoint = 0
             if course.must == False:
-                total += course.cVal()
+                total += course.weight()
         sum = 0
         for course in self.courses:
             if course.must == False:
-                os = floor(AP * course.cVal() / total)
+                os = floor(AP * course.weight() / total)
                 course.assignpoint = os
                 sum += os
         for course in self.courses:
@@ -125,7 +125,7 @@ class Res:
         # 选上课的概率对权重影响
         posb = 1
         for course in self.courses:
-            posb *= course.getP()
+            posb *= course.posb()
         self.val = self.val * sqrt(posb)
 
 def organize(courses : list[Course] = [], constraint : Req = Req()):
@@ -164,8 +164,7 @@ def organize(courses : list[Course] = [], constraint : Req = Req()):
         nonlocal constraint, result
         if len(toselect) == 0:
             if constraint.lb <= points <= constraint.ub:
-                current = Res()
-                current.fromAP(selected, constraint.ap)
+                current = Res(selected, constraint.ap)
                 if result is None:
                     result = current
                 else:
@@ -185,6 +184,8 @@ def organize(courses : list[Course] = [], constraint : Req = Req()):
         else:
             course.selected = False
     if result is None:
+        qDebug('wrong')
         return (False, None)
     else:
+        qDebug('right')
         return (True, courses)

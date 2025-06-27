@@ -169,6 +169,7 @@ class MainWindow(QMainWindow):
         self.ui.addCourse.clicked.connect(self.openAddCourse)
         self.ui.modifyCourse.clicked.connect(self.openModifyCourse)
         self.ui.finish.clicked.connect(self.close)
+        self.ui.organize.clicked.connect(self.autoarrange)
         self.ui.toselect.itemClicked.connect(self.displaycourse)
         self.ui.selected.itemClicked.connect(self.displaycourse)
         self.ui.toselect.itemDoubleClicked.connect(self.to2ed)
@@ -216,9 +217,9 @@ class MainWindow(QMainWindow):
             item = self.ui.selected.item(i)
             course = item.data(Qt.ItemDataRole.UserRole)
             for (day, time) in course.schedule:
-                if len(temp[day - 1][time - 1]) > 0:
-                    temp[day - 1][time - 1] += '\n'
-                temp[day - 1][time - 1] += f'{course.course} - {course.teacher}'
+                if len(temp[time - 1][day - 1]) > 0:
+                    temp[time - 1][day - 1] += '\n'
+                temp[time - 1][day - 1] += f'{course.course} - {course.teacher}'
         for i in range(self.ui.schedule.rowCount()):
             for j in range(self.ui.schedule.columnCount()):
                 self.ui.schedule.setItem(i, j, QTableWidgetItem(temp[i][j]))
