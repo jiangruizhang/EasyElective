@@ -162,7 +162,15 @@ def organize(courses : list[Course] = [], constraint : Req = Req()):
         if conflict(selected + [toselect[-1]]) == False and points + toselect[-1].point <= constraint.ub:
             search(toselect[:-1], selected + [toselect[-1]], points + toselect[-1].point)
     search(courses2, courses1, points)
+    index = set()
+    for course in result.courses:
+        index.add(course.index)
+    for course in courses:
+        if course.index in index:
+            course.selected = True
+        else:
+            course.selected = False
     if result is None:
         return (False, None)
     else:
-        return (True, result.courses)
+        return (True, courses)
