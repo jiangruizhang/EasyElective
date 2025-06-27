@@ -1,5 +1,5 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QTableWidgetItem, QListWidgetItem, QListWidget
+from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QTableWidgetItem, QListWidgetItem, QTableWidget, QAbstractScrollArea, QVBoxLayout
 from PySide6.QtCore import Signal, qDebug, Qt
 from ui_mainwindow import Ui_MainWindow 
 from ui_addcourse import Ui_AddCourse
@@ -7,7 +7,6 @@ from ui_modifycourse import Ui_ModifyCourse
 import pickle
 from pathlib import Path
 from course import Course, organize
-import copy
 import secrets
 
 class AddCourse(QDialog):
@@ -161,6 +160,41 @@ class ModifyCourse(QDialog):
         if data.exists():
             data.unlink()
 
+class CurrentArrangement(QDialog):
+    def __init__(self, parent = None, courses : list[Course] = None):
+        super().__init__(parent)
+        self.parent = parent
+        self.setWindowTitle('投点建议')
+        self.table = QTableWidget()
+        self.table.setColumnCount(2)
+        self.table.setHorizontalHeaderLabels(['课程', '投点'])
+        self.table.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+
+        data = []
+        for course in courses:
+            data.append((f'{course.course} - {course.teacher}', course.assignpoint))
+        with open('points.txt', 'w', encoding = 'utf-8') as f:
+            for name, point in data:
+                f.write(f'{name} : {point}')
+        
+
+        self.table.setRowCount(len(data))
+        for row, (name, score) in enumerate(data):
+            self.table.setItem(row, 0, QTableWidgetItem(name))
+            self.table.setItem(row, 1, QTableWidgetItem(str(score)))
+
+        # 自动调整尺寸
+        self.table.resizeColumnsToContents()
+        self.table.resizeRowsToContents()
+        self.table.adjustSize()
+
+        layout = QVBoxLayout()
+        layout.addWidget(self.table)
+        self.setLayout(layout)
+
+        # 根据布局自动调整窗口尺寸
+        self.adjustSize()
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -270,6 +304,12 @@ class MainWindow(QMainWindow):
             for course in courses:
                 self.save(course)
             self.load()
+            display = []
+            for course in courses:
+                if course.must == False and course.selected == True:
+                    display.append(course)
+            displaywindow = CurrentArrangement(self, display)
+            displaywindow.exec()
         else:
             qDebug('Something wrong')
 
