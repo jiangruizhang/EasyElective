@@ -70,7 +70,13 @@ Organize_Result::Organize_Result(vector<Course> Cl,int AP){
     possibility=op;
     val=oVal*sqrt(op); //平衡多课and少课/高价值的低概率方案
 }
-void dfs(vector<Course> oXX,int o,Requirement need,int opts,const vector<Course> &XX,const vector<Course> &BX,Organize_Result &best_ans){
+void dfs(vector<Course> oXX,
+    int o,
+    Requirement need,
+    int opts,
+    const vector<Course> &XX,
+    const vector<Course> &BX,
+    Organize_Result &best_ans){
     if(need.OverUpperBound(opts))return;
     if(o==XX.size()){
         if(need.LessLowerBound(opts))return;

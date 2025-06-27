@@ -1,8 +1,7 @@
 from copy import deepcopy
 from math import floor, sqrt
+from PySide6.QtCore import qDebug
 class Course:
-    # TO ASK
-
     def __init__(self):
         # 课程基本信息
         self.schedule = []      # 上课时间，用 (day, ti) 来表示 1 - 7, 1 - 12
@@ -55,7 +54,7 @@ class Req:
 class Res:
     # 选课方案
     def __init__(self):
-        self.courses : list[Course] = []
+        self.courses : list[Course] = [] # 选课结果
         self.wrong = 0
         self.posb = 0
         self.val = 0
@@ -66,6 +65,7 @@ class Res:
         self.val = val
 
     def fromAP(self, courses, AP):
+        # AP 可投点数
         def nearlost(course1 : Course, course2 : Course):
             res = 0
             for day1, time1 in course1.schedule:
@@ -114,6 +114,55 @@ class Res:
             self.posb *= course.getP()
         self.val = self.val * sqrt(self.posb)
 
-def organize(courses : list[Course] = []):
+def organize(courses : list[Course] = [], constraint : Req = Req()):
     # 返回二元组，第一个为 True/False 表示是否有合法方案，第二是 list[Course] 通过 selected 来表示选不选
-    pass
+    def conflict(courses : list[Course] = []):
+        def con(course1 : Course, course2 : Course):
+            for d1, t1 in course1.schedule:
+                for d2, t2 in course2.schedule:
+                    if d1 == d2 and t1 == t2:
+                        return True
+            return False
+        for i  in range(len(courses)):
+            for j in range(i + 1, len(courses)):
+                if con(courses[i], courses[j]):
+                    return True
+        return False
+    courses1 : list[Course] = []
+    for course in courses:
+        if course.must == True:
+            courses1.append(course)
+    if conflict(courses1):
+        qDebug('must courses conflict')
+        return (False, [])
+    points = 0 
+    for course in courses1:
+        points += course.point
+    if points > constraint.ub:
+        qDebug('must courses overbound')
+        return (False, [])
+    courses2 : list[Course] = []
+    for course in courses:
+        if course.must == False and not conflict(courses1 + [course]):
+            courses2.append(course)
+    result = None
+    def search(toselect : list[Course], selected : list[Course], points):
+        nonlocal constraint, result
+        if len(toselect) == 0:
+            if constraint.lb <= points <= constraint.ub:
+                current = Res()
+                current.fromAP(selected, constraint.ap)
+                if result is None:
+                    result = current
+                else:
+                    if current.val > result.val:
+                        result = current
+            return
+        search(toselect[:-1], selected, points)
+        if conflict(selected + [toselect[-1]]) == False and points + toselect[-1].point <= constraint.ub:
+            search(toselect[:-1], selected + [toselect[-1]], points + toselect[-1].point)
+    search(courses2, courses1, points)
+    if result is None:
+        return (False, None)
+    else:
+        return (True, result.courses)
