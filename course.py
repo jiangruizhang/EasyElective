@@ -16,10 +16,10 @@ class Course:
         self.index = 0          # 随机的 256bit 编号
         # 用户的情况
         self.intension = 0      # 上这门课的意愿值，用 1 ～ 99 衡量
-    def __repr__(self):
-        return '<course>'
-    def __str__(self):
-        return f'{self.course} - {self.teacher} - {self.point}'
+    # def __repr__(self):
+    #     return '<course>'
+    # def __str__(self):
+    #     return f'{self.course} - {self.teacher} - {self.point}'
     # TO THINK : 是否要区分 set 和 get ？
 
 def organize(courses : list[Course] = []):
