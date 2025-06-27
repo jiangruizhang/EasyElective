@@ -184,6 +184,7 @@ class CurrentArrangement(QDialog):
             self.table.setItem(row, 1, QTableWidgetItem(str(score)))
 
         # 自动调整尺寸
+        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
         self.table.adjustSize()

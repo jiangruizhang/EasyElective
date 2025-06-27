@@ -70,7 +70,7 @@ class Res:
     '''
     选课方案，同时计算权值 val 用于衡量方案好坏
     '''
-    def __init__(self, courses : list[Course] = [], AP : int = Req().ap):
+    def __init__(self, courses : list[Course] = [], AP : int = 99):
         '''
         courses 选课方案
         AP 可投点数
@@ -83,7 +83,7 @@ class Res:
                         res += 1
             return res
         self.courses = deepcopy(courses)
-        self.val = 0
+        self.val = 250 * len(courses)
         # 早八课
         firstcount = 0
         for course in self.courses:
@@ -107,21 +107,25 @@ class Res:
             elif classes >= 6:
                 self.val -= 15 * (classes - 6) ** 3 # 多课日惩罚
         # 投点分配
-        total = 0.1
+        total = 0
         for course in self.courses:
             course.assignpoint = 0
             if course.must == False:
                 total += course.weight()
-        sum = 0
-        for course in self.courses:
-            if course.must == False:
-                os = floor(AP * course.weight() / total)
-                course.assignpoint = os
-                sum += os
-        for course in self.courses:
-            if course.must == False and sum < AP:
-                course.assignpoint += 1
-                sum += 1
+        if total > 0:
+            sum = 0
+            for i in range(len(self.courses)):
+                if self.courses[i].must == False:
+                    os = floor(AP * self.courses[i].weight() / total)
+                    self.courses[i].assignpoint = os
+                    sum += os
+            for i in range(len(self.courses)):
+                if self.courses[i].must == False and sum < AP:
+                    self.courses[i].assignpoint += 1
+                    sum += 1
+        else:
+            for i in range(len(self.courses)):
+                self.courses[i].assignpoint = 0
         # 选上课的概率对权重影响
         posb = 1
         for course in self.courses:
@@ -165,6 +169,7 @@ def organize(courses : list[Course] = [], constraint : Req = Req()):
         if len(toselect) == 0:
             if constraint.lb <= points <= constraint.ub:
                 current = Res(selected, constraint.ap)
+                qDebug(f'{points} {current.val} {constraint.ap}')
                 if result is None:
                     result = current
                 else:
@@ -175,14 +180,17 @@ def organize(courses : list[Course] = [], constraint : Req = Req()):
         if conflict(selected + [toselect[-1]]) == False and points + toselect[-1].point <= constraint.ub:
             search(toselect[:-1], selected + [toselect[-1]], points + toselect[-1].point)
     search(courses2, courses1, points)
-    index = set()
+    assignpoint = dict()
     for course in result.courses:
-        index.add(course.index)
+        assignpoint.update({course.index : course.assignpoint})
+        # index.add(course.index)
     for course in courses:
-        if course.index in index:
+        if course.index in assignpoint:
             course.selected = True
+            course.assignpoint = assignpoint[course.index]
         else:
             course.selected = False
+            course.assignpoint = 0
     if result is None:
         qDebug('wrong')
         return (False, None)
