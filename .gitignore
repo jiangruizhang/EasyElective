@@ -1,2 +1,3 @@
 data/
 points.txt
+__pycache__/
