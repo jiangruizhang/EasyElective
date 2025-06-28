@@ -1,0 +1,190 @@
+/* ===== 全局基础设置 ===== */
+* {
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    color: #333333;
+}
+
+/* ===== 主窗口标题 ===== */
+QMainWindow::title {
+    font-family: "Montserrat", "Microsoft YaHei";
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #2c3e50;
+}
+
+/* ===== 按钮字体 ===== */
+QPushButton {
+    font-family: "Roboto", "Microsoft YaHei";
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+QPushButton:hover {
+    font-weight: 600;
+}
+
+QPushButton:pressed {
+    font-weight: 700;
+}
+
+/* ===== 标签字体 ===== */
+QLabel {
+    font-size: 14px;
+}
+
+/* 标题标签 */
+QLabel.title {
+    font-family: "Montserrat", "Microsoft YaHei";
+    font-size: 18px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+/* 副标题标签 */
+QLabel.subtitle {
+    font-family: "Roboto", "Microsoft YaHei";
+    font-size: 16px;
+    font-weight: 500;
+    color: #7f8c8d;
+}
+
+/* ===== 文本框字体 ===== */
+QLineEdit, QTextEdit, QPlainTextEdit {
+    font-family: "Consolas", "Courier New", monospace;
+    font-size: 13px;
+    background-color: #f8f9fa;
+}
+
+QLineEdit:focus, QTextEdit:focus {
+    font-weight: 500;
+}
+
+/* ===== 列表框字体 ===== */
+QListWidget, QTreeWidget, QTableView {
+    font-family: "Segoe UI", "Microsoft YaHei";
+    font-size: 13px;
+    alternate-background-color: #f8f9fa;
+}
+
+/* 选中项字体 */
+QListWidget::item:selected, QTreeWidget::item:selected {
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #3498db;
+}
+
+/* ===== 菜单字体 ===== */
+QMenuBar {
+    font-family: "Roboto", "Microsoft YaHei";
+    font-size: 13px;
+    font-weight: 500;
+}
+
+QMenuBar::item {
+    padding: 8px 16px;
+}
+
+QMenu {
+    font-family: "Segoe UI", "Microsoft YaHei";
+    font-size: 13px;
+    padding: 8px 0;
+    border: 1px solid #dfe6e9;
+}
+
+QMenu::item {
+    padding: 8px 32px 8px 24px;
+}
+
+QMenu::item:selected {
+    font-weight: 500;
+    background-color: #e3f2fd;
+}
+
+
+/* ===== 复选框和单选按钮 ===== */
+QCheckBox, QRadioButton {
+    font-family: "Segoe UI", "Microsoft YaHei";
+    font-size: 13px;
+    spacing: 8px;
+}
+
+QCheckBox::indicator, QRadioButton::indicator {
+    width: 16px;
+    height: 16px;
+}
+
+
+/* ===== 状态栏字体 ===== */
+QStatusBar {
+    font-family: "Roboto Mono", monospace;
+    font-size: 12px;
+    color: #7f8c8d;
+}
+
+QStatusBar QLabel {
+    font-size: 12px;
+}
+
+/* ===== 基础对话框样式 ===== */
+QDialog {
+    font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+    background-color: #ffffff;
+    border: 1px solid #dfe6e9;
+    border-radius: 8px;
+}
+
+/* 对话框标题 */
+QDialog #qt_dialogtitle_label {
+    font-family: "Montserrat", "Microsoft YaHei";
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #2c3e50;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #ecf0f1;
+}
+
+/* 对话框按钮盒 */
+QDialogButtonBox {
+    padding-top: 16px;
+    border-top: 1px solid #ecf0f1;
+}
+
+QDialogButtonBox QPushButton {
+    min-width: 80px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-family: "Roboto", "Microsoft YaHei";
+    font-weight: 500;
+}
+
+
+
+QPushButton {
+    background: #4CAF50;  /* 绿色背景 */
+    color: white;
+    border-radius: 5px;
+    padding: 8px 16px;
+}
+
+QPushButton:hover {
+    background: #45a049;  /* 深绿色悬停效果 */
+}
+
+/* ② 输入框美化 */
+QLineEdit, QTextEdit {
+    border: 2px solid #cccccc;
+    padding: 6px;
+}
+
+QTextEdit:focus {
+    border-color: #2196F3;  /* 获得焦点时蓝色边框 */
+}
+
+/*设置边界距离*/
+QListWidget::item {
+    padding: 5px;
+    margin: 2px 0;
+}
