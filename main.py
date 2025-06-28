@@ -1,13 +1,20 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QTableWidgetItem, QListWidgetItem, QTableWidget, QAbstractScrollArea, QVBoxLayout
+import os
+from PySide6.QtWidgets import QWidget, QLabel, QPushButton, QApplication,\
+QMainWindow, QDialog, QTableWidgetItem,QListWidgetItem, \
+QTableWidget,QAbstractScrollArea, QVBoxLayout,QGridLayout
 from PySide6.QtCore import Signal, qDebug, Qt
+from PySide6.QtGui import QFontDatabase, QFont
 from ui_mainwindow import Ui_MainWindow 
 from ui_addcourse import Ui_AddCourse
 from ui_modifycourse import Ui_ModifyCourse
 import pickle
 from pathlib import Path
 from course import Course, organize
+from PySide6.QtGui import QPixmap
 import secrets
+
+#app = QApplication(sys.argv)
 
 class AddCourse(QDialog):
     sendcourse = Signal(Course)
@@ -199,8 +206,10 @@ class CurrentArrangement(QDialog):
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
+        #self.setWindowTitle("EasyElective")
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        #self.initUI()
         self.ui.addCourse.clicked.connect(self.openAddCourse)
         self.ui.modifyCourse.clicked.connect(self.openModifyCourse)
         self.ui.finish.clicked.connect(self.close)
@@ -214,7 +223,7 @@ class MainWindow(QMainWindow):
                 if self.ui.schedule.item(row, col) is None:
                     self.ui.schedule.setItem(row, col, QTableWidgetItem(''))
         self.load()
-    
+            
     def openAddCourse(self):
         self.addcourse = AddCourse(self, self.courseindex)
         self.addcourse.sendcourse.connect(self.newcourse)
@@ -314,8 +323,51 @@ class MainWindow(QMainWindow):
         else:
             qDebug('Something wrong')
 
+class CoverPage(QWidget):
+    def __init__(self, main_window):
+        super().__init__()
+        self.main_window = main_window  # 保存主窗口的引用
+        self.setup_ui()
+
+    def setup_ui(self):
+    # 基本设置保持不变
+        self.setWindowTitle("EasyElective")
+        self.setFixedSize(1064, 723)
+
+        # 创建图片标签
+        self.cover_label = QLabel(self)
+        pixmap = QPixmap("cover_page.png").scaled(1064, 723, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        self.cover_label.setPixmap(pixmap)
+        self.cover_label.setAlignment(Qt.AlignCenter)
+
+        # 创建按钮（注意设置为self的子组件）
+        self.start_button = QPushButton("开始选课", self)
+        self.start_button.clicked.connect(self.open_main_window)
+    
+        # 使用网格布局实现叠加效果
+        layout = QGridLayout(self)
+        layout.addWidget(self.cover_label, 0, 0)
+        layout.addWidget(self.start_button, 0, 0, alignment=Qt.AlignCenter | Qt.AlignBottom)
+    
+        # 设置边距使按钮上移
+        layout.setContentsMargins(0, 0, 0, 50)  # 下边距50像素
+
+    def open_main_window(self):
+        self.main_window.show()  # 显示主窗口
+        self.close()  # 关闭封面页
+        
 if __name__ == "__main__":
+    # 先加载样式表
     app = QApplication(sys.argv)
+    try:
+        with open("style.qss", "r", encoding="utf-8") as f:
+            app.setStyleSheet(f.read())
+    except FileNotFoundError:
+        print("警告: 未找到样式表文件 style.qss")
+    # 创建主窗口但不显示
     window = MainWindow()
-    window.show()
-    sys.exit(app.exec())
+    window.setWindowTitle("EasyElective")
+    # 显示封面页
+    cover_page = CoverPage(window)
+    cover_page.show()
+    sys.exit(app.exec())  # 注意是 exec() 不是 exec()
