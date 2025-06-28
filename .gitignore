@@ -1,3 +1,4 @@
 data/
 points.txt
 __pycache__/
+.obsidian/
