@@ -84,7 +84,7 @@ class Res:
             return res
         self.courses = deepcopy(courses)
         self.val = 250 * len(courses)
-        # 早八课
+        # 早八课 & 意愿值
         firstcount = 0
         for course in self.courses:
             firstcount += course.firstclass()
